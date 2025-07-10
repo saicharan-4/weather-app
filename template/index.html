@@ -1,23 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Weather App</title>
+    <meta charset="UTF-8">
+    <title>Weather Web App</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Check Weather</h1>
-    <form method="POST" action="/weather">
-        <input type="text" name="city" placeholder="Enter city name" required>
-        <input type="submit" value="Get Weather">
+    <h1>Weather Data Viewer</h1>
+    <form method="get">
+        <input type="text" name="city" placeholder="City" value="{{ city }}">
+        <input type="date" name="date" value="{{ date }}">
+        <button type="submit">Search</button>
     </form>
-
-    {% if weather %}
-        <h2>Weather for {{ weather.city }}</h2>
-        <ul>
-            <li>Temperature: {{ weather.temperature }}</li>
-            <li>Description: {{ weather.description }}</li>
-            <li>Humidity: {{ weather.humidity }}</li>
-            <li>Wind Speed: {{ weather.wind_speed }}</li>
-        </ul>
-    {% endif %}
+    <div class="table-container">
+        {{ tables | safe }}
+    </div>
 </body>
 </html>
