@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Weather App</title>
-  <link rel="stylesheet" href="/static/style.css" />
+    <title>Weather App</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Live Weather App</h1>
-    <input type="text" id="cityInput" placeholder="Enter city name" />
-    <button onclick="fetchWeather()">Get Weather</button>
-    <div id="result"></div>
-  </div>
+    <h1>Check Weather</h1>
+    <form method="POST" action="/weather">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <input type="submit" value="Get Weather">
+    </form>
 
-  <script>
-    function fetchWeather() {
-      const city = document.getElementById('cityInput').value;
-      fetch(`/weather?city=${city}`)
-        .then(res => res.json())
-        .then(data => {
-          const result = document.getElementById('result');
-          if (data.error) {
-            result.innerText = data.error;
-          } else {
-            result.innerText = `Weather in ${data.city}: ${data.temperature}°C, ${data.description}`;
-          }
-        });
-    }
-  </script>
+    {% if weather %}
+        <h2>Weather for {{ weather.city }}</h2>
+        <ul>
+            <li>Temperature: {{ weather.temperature }}</li>
+            <li>Description: {{ weather.description }}</li>
+            <li>Humidity: {{ weather.humidity }}</li>
+            <li>Wind Speed: {{ weather.wind_speed }}</li>
+        </ul>
+    {% endif %}
 </body>
 </html>
