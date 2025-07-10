@@ -1,25 +1,26 @@
-from flask import Flask, request, jsonify
-import requests
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
-API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'
 
-@app.route('/weather', methods=['GET'])
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/weather', methods=['POST'])
 def get_weather():
-    city = request.args.get('city')
-    if not city:
-        return jsonify({'error': 'City is required'}), 400
-
-    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
-    response = requests.get(url)
-    data = response.json()
-
-    if data.get("cod") != 200:
-        return jsonify({'error': 'City not found'}), 404
-
-    weather_info = {
-        'city': data['name'],
-        'temperature': data['main']['temp'],
-        'description': data['weather'][0]['description'],
+    city = request.form['city']
+    
+    # 🔁 Simulated weather data (instead of real API call)
+    weather_data = {
+        'city': city,
+        'temperature': '25°C',
+        'description': 'Partly cloudy',
+        'humidity': '60%',
+        'wind_speed': '15 km/h'
     }
-    return jsonify(weather_info)
+
+    return render_template('index.html', weather=weather_data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
